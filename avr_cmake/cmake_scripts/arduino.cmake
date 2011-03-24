@@ -10,13 +10,20 @@
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_C_COMPILER avr-gcc)
 set(CMAKE_CXX_COMPILER avr-g++)
-set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "-Wl,--as-needed -Wl,--relax -Wl,--gc-sections")
+# -Wl,--relax #-Wl,--gc-sections reduced code size from 50% to 18% ... what do they do?
+# http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&t=91828&highlight=compile+program+programme+size
+
+#great explanation on avr compiler flags
+#http://www.tty1.net/blog/2008-04-29-avr-gcc-optimisations_en.html
 
 # C only fine tunning
 set(TUNNING_FLAGS "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums") 
 
-set(CMAKE_CXX_FLAGS "-mmcu=${ARDUINO_BOARD} -DF_CPU=${ARDUINO_FCPU} -Os")
-set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${TUNNING_FLAGS} -Wall -Wstrict-prototypes -std=gnu99")
+SET(CPP_FLAGS "-fno-inline-small-functions -ffunction-sections -fdata-sections -fno-tree-loop-optimize -fno-move-loop-invariants")
+
+set(CMAKE_CXX_FLAGS "-mmcu=${ARDUINO_BOARD} -DF_CPU=${ARDUINO_FCPU} -Os ${CPP_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${TUNNING_FLAGS} -Wall -Wstrict-prototypes -std=gnu99 ${CPP_FLAGS}")
 
 include_directories(${ARDUINO_CORE_DIR})
 

@@ -1,3 +1,10 @@
 pyserial:
  ubuntu: python-serial
-
+avrdude:
+ ubuntu: avrdude
+binutils-avr:
+ ubuntu:  binutils-avr
+gcc-avr:
+ ubuntu: gcc-avr
+avr-libc:
+ ubuntu: avr-libc

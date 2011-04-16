@@ -36,7 +36,7 @@
  *
  */
 
-#include "avr_ros/ros_string.h"
+#include "ros_string.h"
 #include <string.h>
 #include <stdlib.h>
 

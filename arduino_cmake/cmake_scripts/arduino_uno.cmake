@@ -6,6 +6,6 @@ set(ARDUINO_UPLOAD_SPEED "115200")
 
 if (NOT ARDUINO_PORT)
 	set(ARDUINO_PORT "/dev/ttyACM0")
-endif
+endif (NOT ARDUINO_PORT)
 
 include("${avr_bridge_PACKAGE_PATH}/arduino_cmake/cmake_scripts/arduino.cmake")

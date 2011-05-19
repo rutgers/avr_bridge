@@ -27,7 +27,7 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${TUNNING_FLAGS} -Wall -Wstrict-prototypes
 
 include_directories(${ARDUINO_CORE_DIR})
 
-set(ARDUINO_SOURCE_FILES
+set(ARDUINO_SRC
 	${ARDUINO_CORE_DIR}/main.cpp
 	${ARDUINO_CORE_DIR}/HardwareSerial.cpp
 	${ARDUINO_CORE_DIR}/pins_arduino.c
@@ -57,20 +57,20 @@ if(AVROBJCOPY AND AVRDUDE AND AVRSIZE)
     add_dependencies(hex firmware)
 
     add_custom_command(TARGET hex POST_BUILD
-        COMMAND ${AVROBJCOPY} -O ihex -R .eeprom ${CMAKE_CURRENT_BINARY_DIR}/firmware firmware.hex
+        COMMAND ${AVROBJCOPY} -O ihex -R .eeprom ${EXECUTABLE_OUTPUT_PATH}/firmware ${EXECUTABLE_OUTPUT_PATH}/firmware.hex
     )
 
     add_custom_target(size)
     add_dependencies(size firmware)
 	add_custom_command(TARGET size POST_BUILD 
-		 COMMAND ${AVRSIZE} -C --mcu=${ARDUINO_BOARD} firmware
+		 COMMAND ${AVRSIZE} -C --mcu=${ARDUINO_BOARD} ${EXECUTABLE_OUTPUT_PATH}/firmware
 		 )
 		
     add_custom_target(flash)
     add_dependencies(flash hex size)
 
     add_custom_command(TARGET flash POST_BUILD
-        COMMAND ${AVRDUDE} -P ${PORT} -b ${ARDUINO_UPLOAD_SPEED} -c arduino -p ${ARDUINO_MCU} -V -F -U flash:w:firmware.hex:i
+        COMMAND ${AVRDUDE} -P ${PORT} -b ${ARDUINO_UPLOAD_SPEED} -c arduino -p ${ARDUINO_MCU} -V -F -U flash:w:${EXECUTABLE_OUTPUT_PATH}/firmware.hex:i
     )
 endif()
 

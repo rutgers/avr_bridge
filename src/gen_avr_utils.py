@@ -210,9 +210,9 @@ def write_header_file(f, msg_name, pkg, msg_spec):
 	f.line('public:')
 	f.indent()
 
-	f.line('ros::MsgSz bytes();')
-	f.line('ros::MsgSz serialize(uint8_t *out_buffer);')
-	f.line('ros::MsgSz deserialize(uint8_t *data);')
+	f.line('virtual ros::MsgSz bytes();')
+	f.line('virtual ros::MsgSz serialize(uint8_t *out_buffer);')
+	f.line('virtual ros::MsgSz deserialize(uint8_t *data);')
 	
 	#write msg fields
 	for field in msg_spec.parsed_fields():
@@ -432,15 +432,14 @@ class CGenerator():
 		f.macro_line('ifndef AVR_ROS_NODE_DECL_H_')
 		f.macro_line('define AVR_ROS_NODE_DECL_H_')
 		f.macro_line('include <avr_ros/node_handle.h>')
-		#f.line('extern ros::NodeHandle<{0}, 256> node;'.format(msg_ct))
-		f.line('extern ros::NodeHandle node;'.format(msg_ct))
+		f.line('extern ros::NodeHandle<{0}, 256> node;'.format(msg_ct))
 		f.macro_line('endif')
 
 		
 	def gen_node_instance(self, f):
 		msg_ct = len(self.topic_ids)
 		f.macro_line('include <avr_ros/node_handle.h>')
-		f.line('ros::NodeHandle node("{0}", {1}, 256);'.format(self.config['name'], msg_ct))
+		f.line('ros::NodeHandle<{1}, 256> node("{0}");'.format(self.config['name'], msg_ct))
 
 	def generateMsgFile(self, folderPath, msg):
 		pkg, msg_name = msg.split('/')

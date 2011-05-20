@@ -12,6 +12,10 @@ add_custom_command(TARGET gen_avr_ros PRE_BUILD
        
 execute_process(       COMMAND rosrun avr_bridge gen_avr.py ${PROJECT_SOURCE_DIR}/${AVR_BRIDGE_CONFIG} ${PROJECT_SOURCE_DIR}/src )
 
+file(GLOB AVR_ROS_SRC
+    "src/avr_ros/*.cpp"
+)
+
 #to compile, use make
 #to program arduino on /dev/ttyUSB0, do make flash
 #to check the program size use make size

@@ -9,7 +9,12 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 add_custom_target(gen_avr_ros ALL)
 add_custom_command(TARGET gen_avr_ros PRE_BUILD
         COMMAND rosrun avr_bridge gen_avr.py ${PROJECT_SOURCE_DIR}/${AVR_BRIDGE_CONFIG} ${PROJECT_SOURCE_DIR}/src )
-        
+       
+execute_process(       COMMAND rosrun avr_bridge gen_avr.py ${PROJECT_SOURCE_DIR}/${AVR_BRIDGE_CONFIG} ${PROJECT_SOURCE_DIR}/src )
+
+file(GLOB AVR_ROS_SRC
+    "src/avr_ros/*.cpp"
+)
 
 #to compile, use make
 #to program arduino on /dev/ttyUSB0, do make flash
